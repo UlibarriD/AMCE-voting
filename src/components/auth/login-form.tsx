@@ -43,7 +43,7 @@ export function LoginForm() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://www.amce.org.mx/api/token", {
+      const response = await fetch("http://localhost:3000/api/token", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,7 +51,7 @@ export function LoginForm() {
         body: JSON.stringify(data),
       });
 
-      console.log(response);
+      console.log(await response.json());
       toast.success("Autenticación exitosa");
     } catch (error) {
       if (error instanceof Error) {
