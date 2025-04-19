@@ -43,7 +43,7 @@ export function LoginForm() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3000/api/token", {
+      const response = await fetch("http://amce.org.mx/api/token", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
