@@ -10,6 +10,15 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import {
   Loader2,
   RefreshCw,
   BarChart3,
@@ -59,6 +68,10 @@ function PaginaEstadisticas() {
   const [loadingVotantes, setLoadingVotantes] = useState(true);
   const [actualizando, setActualizando] = useState(false);
   const [generandoPDF, setGenerandoPDF] = useState(false);
+  // Estados para paginación
+  const [paginaActual, setPaginaActual] = useState(1);
+  const elementosPorPagina = 10;
+
   const usuario = Auth.getUser();
 
   const graficosRef = useRef<HTMLDivElement>(null);
@@ -148,6 +161,34 @@ function PaginaEstadisticas() {
     } catch (error) {
       console.error("Error al formatear fecha:", error);
       return fechaStr;
+    }
+  };
+
+  // Cálculos para paginación
+  const totalPaginas = votantes
+    ? Math.ceil(votantes.length / elementosPorPagina)
+    : 0;
+  const indiceInicio = (paginaActual - 1) * elementosPorPagina;
+  const indiceFin = Math.min(
+    indiceInicio + elementosPorPagina,
+    votantes?.length || 0
+  );
+  const votantesPaginados = votantes?.slice(indiceInicio, indiceFin) || [];
+
+  // Cambiar de página
+  const irAPagina = (numeroPagina: number) => {
+    setPaginaActual(numeroPagina);
+  };
+
+  const irAPaginaAnterior = () => {
+    if (paginaActual > 1) {
+      setPaginaActual((prev) => prev - 1);
+    }
+  };
+
+  const irAPaginaSiguiente = () => {
+    if (paginaActual < totalPaginas) {
+      setPaginaActual((prev) => prev + 1);
     }
   };
 
@@ -317,10 +358,9 @@ function PaginaEstadisticas() {
         </div>
       </div>
 
-      <div className="mb-6 flex justify-between items-center">
+      <div className="mb-6 gap-2 flex justify-between items-center">
         <Button
           onClick={generarPDF}
-          variant="outline"
           disabled={generandoPDF || !estadisticas || !votantes}
           className="flex items-center"
         >
@@ -596,7 +636,7 @@ function PaginaEstadisticas() {
                         </tr>
                       </thead>
                       <tbody>
-                        {votantes.map((votante) => (
+                        {votantesPaginados.map((votante) => (
                           <tr
                             key={votante.votoId}
                             className="border-b last:border-0 hover:bg-muted/50"
@@ -628,6 +668,103 @@ function PaginaEstadisticas() {
                       </tbody>
                     </table>
                   </div>
+                </div>
+                <div className="mt-6 flex justify-center">
+                  <Pagination>
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious
+                          onClick={irAPaginaAnterior}
+                          className={
+                            paginaActual <= 1
+                              ? "pointer-events-none opacity-50"
+                              : ""
+                          }
+                        />
+                      </PaginationItem>
+
+                      {/* Mostrar primera página */}
+                      {paginaActual > 3 && (
+                        <PaginationItem>
+                          <PaginationLink onClick={() => irAPagina(1)}>
+                            1
+                          </PaginationLink>
+                        </PaginationItem>
+                      )}
+
+                      {/* Mostrar elipsis si hay muchas páginas antes */}
+                      {paginaActual > 4 && (
+                        <PaginationItem>
+                          <PaginationEllipsis />
+                        </PaginationItem>
+                      )}
+
+                      {/* Mostrar página anterior si no es la primera */}
+                      {paginaActual > 1 && (
+                        <PaginationItem>
+                          <PaginationLink
+                            onClick={() => irAPagina(paginaActual - 1)}
+                          >
+                            {paginaActual - 1}
+                          </PaginationLink>
+                        </PaginationItem>
+                      )}
+
+                      {/* Página actual */}
+                      <PaginationItem>
+                        <PaginationLink
+                          isActive
+                          onClick={() => irAPagina(paginaActual)}
+                        >
+                          {paginaActual}
+                        </PaginationLink>
+                      </PaginationItem>
+
+                      {/* Mostrar página siguiente si no es la última */}
+                      {paginaActual < totalPaginas && (
+                        <PaginationItem>
+                          <PaginationLink
+                            onClick={() => irAPagina(paginaActual + 1)}
+                          >
+                            {paginaActual + 1}
+                          </PaginationLink>
+                        </PaginationItem>
+                      )}
+
+                      {/* Mostrar elipsis si hay muchas páginas después */}
+                      {paginaActual < totalPaginas - 3 && (
+                        <PaginationItem>
+                          <PaginationEllipsis />
+                        </PaginationItem>
+                      )}
+
+                      {/* Mostrar última página */}
+                      {paginaActual < totalPaginas - 2 && totalPaginas > 1 && (
+                        <PaginationItem>
+                          <PaginationLink
+                            onClick={() => irAPagina(totalPaginas)}
+                          >
+                            {totalPaginas}
+                          </PaginationLink>
+                        </PaginationItem>
+                      )}
+
+                      <PaginationItem>
+                        <PaginationNext
+                          onClick={irAPaginaSiguiente}
+                          className={
+                            paginaActual >= totalPaginas
+                              ? "pointer-events-none opacity-50"
+                              : ""
+                          }
+                        />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                </div>
+                <div className="text-center text-sm text-muted-foreground mt-2">
+                  Mostrando {indiceInicio + 1}-{indiceFin} de{" "}
+                  {votantes?.length || 0} registros
                 </div>
               </CardContent>
             </Card>
