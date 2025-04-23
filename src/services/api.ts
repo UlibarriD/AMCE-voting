@@ -1,6 +1,11 @@
-import { Candidato, EstadisticasVotacion, ComprobarVotoResponse, ListaVotantesResponse } from "@/types";
+import {
+  Candidato,
+  EstadisticasVotacion,
+  ComprobarVotoResponse,
+  ListaVotantesResponse,
+} from "@/types";
 
-const BASE_URL = "http://localhost:3000/api/votacion";
+const BASE_URL = "https://www.amce.org.mx/api/votacion";
 
 // Función para obtener el token del sessionStorage
 const getToken = () => {
@@ -94,18 +99,20 @@ export async function getListaVotantes(): Promise<ListaVotantesResponse> {
     });
 
     const responseData = await response.json();
-    
+
     if (!responseData.success) {
-      throw new Error(responseData.error || 'Error al obtener lista de votantes');
+      throw new Error(
+        responseData.error || "Error al obtener lista de votantes"
+      );
     }
-    
+
     return responseData;
   } catch (error) {
-    console.error('Error al obtener lista de votantes:', error);
+    console.error("Error al obtener lista de votantes:", error);
     return {
       success: false,
       data: null,
-      error: 'No se pudo cargar la lista de votantes',
+      error: "No se pudo cargar la lista de votantes",
     };
   }
 }
@@ -138,14 +145,14 @@ export async function getEstadisticas(): Promise<EstadisticasVotacion> {
     });
 
     const responseData = await response.json();
-    
+
     if (!responseData.success) {
-      throw new Error(responseData.error || 'Error al obtener estadísticas');
+      throw new Error(responseData.error || "Error al obtener estadísticas");
     }
-    
+
     return responseData.data as EstadisticasVotacion;
   } catch (error) {
-    console.error('Error al obtener estadísticas:', error);
-    throw new Error('No se pudieron cargar las estadísticas');
+    console.error("Error al obtener estadísticas:", error);
+    throw new Error("No se pudieron cargar las estadísticas");
   }
 }
