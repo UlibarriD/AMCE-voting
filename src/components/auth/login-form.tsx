@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -28,7 +28,7 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 export function LoginForm() {
-  // const router = useRouter();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<LoginFormValues>({
@@ -43,7 +43,7 @@ export function LoginForm() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://amce.org.mx/api/token", {
+      const response = await fetch("https://www.amce.org.mx/api/token", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,8 +51,26 @@ export function LoginForm() {
         body: JSON.stringify(data),
       });
 
-      console.log(await response.json());
-      toast.success("Autenticación exitosa");
+      const responseData = await response.json();
+
+      if (responseData.success) {
+        // Guardar token y datos del usuario en sessionStorage
+        sessionStorage.setItem("auth-token", responseData.token);
+        sessionStorage.setItem("user-data", JSON.stringify(responseData.user));
+
+        toast.success("Autenticación exitosa");
+
+        // Redirigir según el rol del usuario
+        if (responseData.user.membresia === 2) {
+          // Usuario administrador
+          router.push("/admin/estadisticas");
+        } else {
+          // Usuario normal
+          router.push("/votar");
+        }
+      } else {
+        toast.error("Error en la autenticación");
+      }
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
