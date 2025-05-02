@@ -3,6 +3,10 @@
 @custom-variant dark (&:is(.dark *));
 @tailwind utilities;
 
+nextjs-portal {
+  display: none;
+}
+
 :root {
   --card: hsl(0 0% 100%);
   --card-foreground: hsl(222.2 84% 4.9%);
