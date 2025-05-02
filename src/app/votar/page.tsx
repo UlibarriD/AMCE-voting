@@ -13,7 +13,6 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { TarjetaCandidato } from "@/components/votacion/tarjeta-candidato";
-import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
 import { es } from "date-fns/locale";
 
@@ -22,9 +21,7 @@ function PaginaVotacion() {
   const [loading, setLoading] = useState(true);
   const [votando, setVotando] = useState(false);
   const [yaVoto, setYaVoto] = useState(false);
-  const [candidatoVotado, setCandidatoVotado] = useState<Candidato | null>(
-    null
-  );
+
   const [fechaVoto, setFechaVoto] = useState<string | null>(null);
   const [candidatoSeleccionado, setCandidatoSeleccionado] = useState<
     number | null
@@ -41,8 +38,6 @@ function PaginaVotacion() {
           setYaVoto(infoVoto.data.haVotado);
 
           if (infoVoto.data.haVotado && infoVoto.data.candidato) {
-            setCandidatoVotado(infoVoto.data.candidato);
-
             // Formatear la fecha de votación
             if (infoVoto.data.voto?.fechaVoto) {
               const fecha = new Date(infoVoto.data.voto.fechaVoto);
@@ -90,7 +85,6 @@ function PaginaVotacion() {
         (c) => c.id === candidatoSeleccionado
       );
       if (candidatoInfo) {
-        setCandidatoVotado(candidatoInfo);
         setFechaVoto("hace un momento");
       }
 
