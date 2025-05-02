@@ -629,9 +629,9 @@ function PaginaEstadisticas() {
                     <table className="w-full text-sm">
                       <thead>
                         <tr className="border-b bg-muted/50 font-medium">
-                          <th className="py-3 px-4 text-left">Nombre</th>
-                          <th className="py-3 px-4 text-left">RFC</th>
-                          <th className="py-3 px-4 text-left">Candidato</th>
+                          <th className="py-3 px-4 text-left">
+                            Candidato Votado
+                          </th>
                           <th className="py-3 px-4 text-left">Fecha de voto</th>
                         </tr>
                       </thead>
@@ -641,20 +641,6 @@ function PaginaEstadisticas() {
                             key={votante.votoId}
                             className="border-b last:border-0 hover:bg-muted/50"
                           >
-                            <td className="py-3 px-4">
-                              <div className="font-medium">
-                                {votante.nombreCompleto}
-                              </div>
-                              <div className="text-xs text-muted-foreground">
-                                {votante.apellidoPaterno}{" "}
-                                {votante.apellidoMaterno}
-                              </div>
-                            </td>
-                            <td className="py-3 px-4">
-                              <code className="rounded bg-muted px-1 py-0.5">
-                                {votante.rfc}
-                              </code>
-                            </td>
                             <td className="py-3 px-4">
                               <div>{votante.candidatoNombre}</div>
                             </td>

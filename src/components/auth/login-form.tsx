@@ -34,8 +34,7 @@ export function LoginForm() {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      username: "",
-      password: "",
+      rfc: "",
     },
   });
 
@@ -43,12 +42,12 @@ export function LoginForm() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://www.amce.org.mx/api/token", {
+      const response = await fetch("https://www.amce.org.mx/api/token2", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ rfc: data.rfc }),
       });
 
       const responseData = await response.json();
@@ -69,7 +68,7 @@ export function LoginForm() {
           router.push("/votar");
         }
       } else {
-        toast.error("Error en la autenticación");
+        toast.error(responseData.error ?? "Error en la autenticación");
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -91,7 +90,7 @@ export function LoginForm() {
           AMCE Votaciones
         </CardTitle>
         <CardDescription className="text-center">
-          Ingresa tu RFC o correo electrónico para votar
+          Ingresa tu RFC para iniciar sesión
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -99,31 +98,13 @@ export function LoginForm() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name="username"
+              name="rfc"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>RFC o Correo electrónico</FormLabel>
+                  <FormLabel>RFC</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Ingresa tu RFC o correo"
-                      {...field}
-                      disabled={isLoading}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Contraseña</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Ingresa tu contraseña"
+                      placeholder="Ingresa tu RFC"
                       {...field}
                       disabled={isLoading}
                     />

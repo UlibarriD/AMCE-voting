@@ -151,45 +151,6 @@ function PaginaVotacion() {
               )}
             </p>
           </div>
-
-          {candidatoVotado && (
-            <div className="bg-card border rounded-lg overflow-hidden">
-              <h2 className="text-xl font-semibold p-4 bg-muted/50">
-                Candidato elegido
-              </h2>
-              <div className="p-6 flex flex-col md:flex-row gap-6">
-                {candidatoVotado.imagenS3Llave && (
-                  <div className="w-full md:w-1/3 flex justify-center">
-                    <Image
-                      src={candidatoVotado.imagenS3Llave}
-                      alt={candidatoVotado.nombre}
-                      width={240}
-                      height={320}
-                      className="object-contain rounded-md"
-                    />
-                  </div>
-                )}
-                <div className="w-full md:w-2/3">
-                  <h3 className="text-2xl font-bold mb-2">
-                    {candidatoVotado.nombre}
-                  </h3>
-                  {candidatoVotado.descripcion && (
-                    <p className="text-muted-foreground mb-4">
-                      {candidatoVotado.descripcion}
-                    </p>
-                  )}
-                  {candidatoVotado.propuesta && (
-                    <div className="mt-4">
-                      <h4 className="font-medium mb-2">Propuesta:</h4>
-                      <p className="whitespace-pre-line">
-                        {candidatoVotado.propuesta}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       ) : (
         <div className="mb-8">
