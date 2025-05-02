@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 // IP autorizada (reemplaza esto con la IP que quieres permitir)
-const ALLOWED_IP = "201.138.6.68";
+const ALLOWED_IP = "200.68.170.107";
 
 export function middleware(request: NextRequest) {
   // Obtenemos la IP del cliente desde los headers
