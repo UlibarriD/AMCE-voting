@@ -644,7 +644,11 @@ function PaginaEstadisticas() {
                             className="border-b last:border-0 hover:bg-muted/50"
                           >
                             <td className="py-3 px-4">
-                              <div>{votante.nombreCompleto}</div>
+                              <div>
+                                {votante.nombreCompleto}{" "}
+                                {votante.apellidoPaterno}{" "}
+                                {votante.apellidoMaterno}
+                              </div>
                             </td>
                             <td className="py-3 px-4">
                               <div>{votante.rfc}</div>
