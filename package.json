@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --no-warnings",
+    "dev": "next dev",
     "dev:quiet": "cross-env NODE_OPTIONS='--no-warnings' next dev",
     "build": "next build",
     "start": "next start",
